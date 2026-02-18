@@ -43,11 +43,11 @@ function loginSuccess(user) {
 
     // Age logic
     if (user.age < 18) {
-        document.body.style.backgroundColor = "#e1f5fe"; // Lightblue
+        document.body.style.backgroundColor = "#96c4d6"; // Lightblue
     } else if (user.age < 40) {
-        document.body.style.backgroundColor = "#fff9c4"; // Yellowlike
+        document.body.style.backgroundColor = "#e6e0af"; // Yellowlike
     } else {
-        document.body.style.backgroundColor = "#cfd8dc"; // Grey
+        document.body.style.backgroundColor = "#3e4346"; // Grey
     }
 
     loadComments();
