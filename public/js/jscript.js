@@ -9,29 +9,33 @@ function toggleMode() {
 }
 
 async function auth() {
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
-    const age = document.getElementById('age').value;
+    try {
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const age = document.getElementById('age').value;
 
-    const endpoint = isRegisterMode ? '/api/register' : '/api/login';
-    const body = isRegisterMode ? { username, password, age } : { username, password };
+        const endpoint = isRegisterMode ? '/api/register' : '/api/login';
+        const body = isRegisterMode ? { username, password, age } : { username, password };
 
-    const res = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
-    });
+        const res = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+        });
 
-    const data = await res.json();
-    if (res.ok) {
-        if (isRegisterMode) {
-            alert("Great! Log in now.");
-            toggleMode();
+        const data = await res.json();
+        if (res.ok) {
+            if (isRegisterMode) {
+                alert("Great! Log in now.");
+                toggleMode();
+            } else {
+                loginSuccess(data);
+            }
         } else {
-            loginSuccess(data);
+            alert(data.error);
         }
-    } else {
-        alert(data.error);
+    } catch (e) {
+        alert("Network error");
     }
 }
 

@@ -16,7 +16,7 @@ app.post('/api/register', (req, res) => {
 
     db.run(`INSERT INTO users (username, password, age) VALUES (?, ?, ?)`, 
     [username, hashedPassword, age], (err) => {
-        if (err) return res.status(400).json({ error: "Alredy taken" });
+        if (err) return res.status(400).json({ error: "Already taken" });
         res.json({ message: "Great!" });
     });
 });
@@ -36,6 +36,7 @@ app.post('/api/login', (req, res) => {
 // 3. Get all comments
 app.get('/api/comments', (req, res) => {
     db.all(`SELECT * FROM comments ORDER BY timestamp DESC`, [], (err, rows) => {
+        if (err) return res.status(500).json({ error: "Database error" });
         res.json(rows);
     });
 });
@@ -43,9 +44,10 @@ app.get('/api/comments', (req, res) => {
 // 4. Leave comment
 app.post('/api/comments', (req, res) => {
     const { username, text } = req.body;
-    db.run(`INSERT INTO comments (username, text) VALUES (?, ?)`, [username, text], () => {
+    db.run(`INSERT INTO comments (username, text) VALUES (?, ?)`, [username, text], (err) => {
+        if (err) return res.status(500).json({ error: "Database error" });
         res.json({ success: true });
     });
 });
 
-app.listen(3000, () => console.log('Сервер: http://localhost:3000'));
+app.listen(3000, () => console.log('Server: http://localhost:3000'));
